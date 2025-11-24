@@ -1,0 +1,84 @@
+CUDNN:
+  BENCHMARK: true
+  DETERMINISTIC: false
+  ENABLED: true
+
+GPUS: (0,)
+WORKERS: 4
+PRINT_FREQ: 20
+
+MODEL:
+  NAME: seg_hrnet
+  PRETRAINED: ''
+  NUM_OUTPUTS: 1
+  ALIGN_CORNERS: false
+  EXTRA:
+    FINAL_CONV_KERNEL: 1
+
+    STAGE1:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 1
+      BLOCK: BOTTLENECK
+      NUM_BLOCKS: (4,)
+      NUM_CHANNELS: (64,)
+      FUSE_METHOD: SUM
+
+    STAGE2:
+      NUM_MODULES: 1
+      NUM_BRANCHES: 2
+      BLOCK: BASIC
+      NUM_BLOCKS: (4, 4)
+      NUM_CHANNELS: (18, 36)
+      FUSE_METHOD: SUM
+
+    STAGE3:
+      NUM_MODULES: 4
+      NUM_BRANCHES: 3
+      BLOCK: BASIC
+      NUM_BLOCKS: (4, 4, 4)
+      NUM_CHANNELS: (18, 36, 72)
+      FUSE_METHOD: SUM
+
+    STAGE4:
+      NUM_MODULES: 3
+      NUM_BRANCHES: 4
+      BLOCK: BASIC
+      NUM_BLOCKS: (4, 4, 4, 4)
+      NUM_CHANNELS: (18, 36, 72, 144)
+      FUSE_METHOD: SUM
+
+DATASET:
+  DATASET: cityscapes
+  ROOT: "/content/HRNet/data/"
+  TEST_SET: "list/cityscapes/val.lst"
+  TRAIN_SET: "list/cityscapes/train.lst"
+  NUM_CLASSES: 1
+
+TRAIN:
+  IMAGE_SIZE: [512, 512]
+  BASE_SIZE: 512
+  BATCH_SIZE_PER_GPU: 4
+  SHUFFLE: true
+  BEGIN_EPOCH: 0
+  END_EPOCH: 200
+  RESUME: false
+  OPTIMIZER: adamw
+  LR: 0.0001
+  WD: 0.0001
+  MOMENTUM: 0.9
+  NESTEROV: false
+
+LOSS:
+  USE_OHEM: false
+  OHEMTHRES: 0.9
+  OHEMKEEP: 100000
+  CLASS_BALANCE: false
+  BALANCE_WEIGHTS: [1]
+
+TEST:
+  IMAGE_SIZE: [512, 512]
+  BASE_SIZE: 512
+  BATCH_SIZE_PER_GPU: 1
+  FLIP_TEST: false
+  MULTI_SCALE: false
+  SCALE_LIST: [1]
