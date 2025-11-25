@@ -3,7 +3,7 @@ CUDNN:
   DETERMINISTIC: false
   ENABLED: true
 
-GPUS: (0,)
+GPUS: [0]
 WORKERS: 4
 PRINT_FREQ: 20
 
@@ -17,41 +17,40 @@ MODEL:
 
     STAGE1:
       NUM_MODULES: 1
-      NUM_BRANCHES: 1
       BLOCK: BOTTLENECK
-      NUM_BLOCKS: (4,)
-      NUM_CHANNELS: (64,)
+      NUM_BLOCKS: [4]
+      NUM_CHANNELS: [64]
       FUSE_METHOD: SUM
 
     STAGE2:
       NUM_MODULES: 1
       NUM_BRANCHES: 2
       BLOCK: BASIC
-      NUM_BLOCKS: (4, 4)
-      NUM_CHANNELS: (18, 36)
+      NUM_BLOCKS: [4, 4]
+      NUM_CHANNELS: [18, 36]
       FUSE_METHOD: SUM
 
     STAGE3:
       NUM_MODULES: 4
       NUM_BRANCHES: 3
       BLOCK: BASIC
-      NUM_BLOCKS: (4, 4, 4)
-      NUM_CHANNELS: (18, 36, 72)
+      NUM_BLOCKS: [4, 4, 4]
+      NUM_CHANNELS: [18, 36, 72]
       FUSE_METHOD: SUM
 
     STAGE4:
       NUM_MODULES: 3
       NUM_BRANCHES: 4
       BLOCK: BASIC
-      NUM_BLOCKS: (4, 4, 4, 4)
-      NUM_CHANNELS: (18, 36, 72, 144)
+      NUM_BLOCKS: [4, 4, 4, 4]
+      NUM_CHANNELS: [18, 36, 72, 144]
       FUSE_METHOD: SUM
 
 DATASET:
   DATASET: cityscapes
-  ROOT: "/content/HRNet/data/"
-  TEST_SET: "list/cityscapes/val.lst"
-  TRAIN_SET: "list/cityscapes/train.lst"
+  ROOT: /content/HRNet/data/
+  TEST_SET: list/cityscapes/val.lst
+  TRAIN_SET: list/cityscapes/train.lst
   NUM_CLASSES: 1
 
 TRAIN:
